@@ -2,6 +2,7 @@ package application;
 
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 import entities.Employee;
@@ -11,7 +12,7 @@ public class Program {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		
-		List<Employee> list = new ArrayList<Employee>();
+		List<Employee> list = new ArrayList<>();
 		
 		int quantityEmployees = 0;
 		
@@ -20,9 +21,9 @@ public class Program {
 		System.out.println();
 		
 		for(int i = 0; i<quantityEmployees; i++) {
-			int id = 0;
+			Integer id = 0;
 			String name = "";
-			double salary = 0.0;
+			Double salary = 0.0;
 			
 			System.out.printf("Employee #%d:\n", (i+1));
 			System.out.print("Id: ");
@@ -43,8 +44,22 @@ public class Program {
 		
 		if(list.stream().filter(employee -> employee.getId() == increaseSalaryId).findFirst().orElse(null) == null) {
 			System.out.println("This id does not exist!");
+			System.out.println();
 		} else {
-			System.out.println("Enter the percentage: ");
+			double percentage = 0.0;
+			System.out.print("Enter the percentage: ");
+			percentage = sc.nextDouble();
+			
+			System.out.println();
+			
+			List<Employee> result = list.stream().filter(employee -> employee.getId() == increaseSalaryId).collect(Collectors.toList());
+			Employee employee = result.get(0);
+			employee.increaseSalary(percentage);
+		}
+		
+		System.out.println("List of employees: ");
+		for(Employee employee: list) {
+			System.out.println(employee);
 		}
 		
 		sc.close();
